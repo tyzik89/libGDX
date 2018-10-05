@@ -8,21 +8,55 @@ import com.mylesson.lesson_1.view.GameScreen;
 
 public class CarController {
     private Polygon carBounds;
+    private float carSpeed, speedVelocity = 15f, speedMax = 10f;
+    //За 1 сек поворот будет происходить на 30 градусов
+    private float rotationSpeed = 30f;
 
     public CarController(Polygon carBounds) {
         this.carBounds = carBounds;
     }
 
-    float speed, velocity = 0.2f;
     public void handle() {
+        //Всё что связано со скоростью
         if (Gdx.input.isKeyPressed(Input.Keys.UP))
-            speed += velocity;
+            carSpeed += speedVelocity * GameScreen.deltaCff;
         else if(Gdx.input.isKeyPressed(Input.Keys.DOWN))
-                speed -= velocity;
+            carSpeed -= speedVelocity * GameScreen.deltaCff;
+        else
+            downSpeed();
+        carSpeed = sliceSpeed();
+        //
 
+        //Всё, что связано с поворотом
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
+            carBounds.rotate(rotationSpeed * carSpeed * GameScreen.deltaCff);
+        else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+            carBounds.rotate(- rotationSpeed * carSpeed * GameScreen.deltaCff);
+        //
 
         carBounds.setPosition(
-                        carBounds.getX() + MathUtils.cosDeg(carBounds.getRotation() + 90) * speed * GameScreen.deltaCff,
-                        carBounds.getY() + MathUtils.sinDeg(carBounds.getRotation() + 90) * speed * GameScreen.deltaCff);
+                        carBounds.getX() + MathUtils.cosDeg(carBounds.getRotation() + 90) * carSpeed * GameScreen.deltaCff,
+                        carBounds.getY() + MathUtils.sinDeg(carBounds.getRotation() + 90) * carSpeed * GameScreen.deltaCff);
+    }
+
+
+
+    //Гашение скорости
+    private void downSpeed() {
+        if (carSpeed > speedVelocity * GameScreen.deltaCff)
+            carSpeed -= speedVelocity * GameScreen.deltaCff;
+        else if (carSpeed < -speedVelocity * GameScreen.deltaCff)
+            carSpeed += speedVelocity * GameScreen.deltaCff;
+        else
+            carSpeed = 0f;
+    }
+
+    //Ограничитель скорости
+    private float sliceSpeed() {
+        if (carSpeed > speedMax)
+            return speedMax;
+        if (carSpeed < -speedMax)
+            return -speedMax;
+        return carSpeed;
     }
 }

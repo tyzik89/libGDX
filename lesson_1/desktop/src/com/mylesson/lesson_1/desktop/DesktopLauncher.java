@@ -11,6 +11,10 @@ public class DesktopLauncher {
 		//Установка разрешения окна
         config.width = 854;
         config.height = 480;
+        //Убрать ограничение fps
+        config.foregroundFPS = 0;
+        //Убрать вертикальную синхронизацию
+        config.vSyncEnabled = false;
 
 		new LwjglApplication(new Main(), config);
 	}

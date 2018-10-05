@@ -22,7 +22,7 @@ public class GameScreen implements Screen {
     public void show() {
         batch = new SpriteBatch();
         //Путь к файлу относительный
-        carTexture = new Texture(Gdx.files.internal("car.png"));
+        carTexture = new Texture(Gdx.files.internal("car_1.png"));
         //Установка фильтрации для текстуры
         carTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         car = new Car(carTexture, 0, 0, 1f, 1f  * 2f);
@@ -46,7 +46,7 @@ public class GameScreen implements Screen {
     public void resize(int width, int height) {
         //Соотношение сторон
         float aspectRatio = (float) height / width;
-        camera = new OrthographicCamera(20f, 20f * aspectRatio);
+        camera = new OrthographicCamera(30f, 30f * aspectRatio);
         //Установка ЗУМа камеры
         camera.zoom = 0.6f;
         camera.update();
