@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.MathUtils;
 
 import java.util.Random;
 
-public class BallonActor extends BaseActor {
+public class BalloonActor extends BaseActor {
     private float speed;
     private float amplitude;
     private float oscillation;
@@ -14,7 +14,7 @@ public class BallonActor extends BaseActor {
     private float time;
     private int offsetX;
 
-    public BallonActor() {
+    public BalloonActor() {
         this.speed = 160 * MathUtils.random(0.5f, 2.0f);
         this.amplitude = 80 * MathUtils.random(0.5f, 2.0f);
         this.oscillation = 0.01f * MathUtils.random(0.5f, 2.0f);

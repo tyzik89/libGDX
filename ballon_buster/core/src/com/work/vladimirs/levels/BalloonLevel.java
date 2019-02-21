@@ -1,6 +1,5 @@
 package com.work.vladimirs.levels;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -8,15 +7,14 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.work.vladimirs.actors.BallonActor;
+import com.work.vladimirs.actors.BalloonActor;
 import com.work.vladimirs.actors.BaseActor;
-import com.work.vladimirs.entities.DangerBallon;
-import com.work.vladimirs.entities.StandartBallon;
-import com.work.vladimirs.screens.BaseScreen;
+import com.work.vladimirs.entities.DangerBalloon;
+import com.work.vladimirs.entities.StandartBalloon;
+import com.work.vladimirs.game.BaseGame;
 
 import java.util.Random;
 
@@ -42,8 +40,8 @@ public class BalloonLevel extends BaseScreen {
     final int mapWidth = 640;
     final int mapHeight = 480;
 
-    public BalloonLevel(Game game) {
-        super(game);
+    public BalloonLevel(BaseGame baseGame) {
+        super(baseGame);
     }
 
     @Override
@@ -61,13 +59,14 @@ public class BalloonLevel extends BaseScreen {
         Label.LabelStyle style = new Label.LabelStyle(font, Color.NAVY);
 
         popped = 0;
-        poppedLabel = new Label("Popped: 0", style);
+        poppedLabel = new Label("Popped: --", baseGame.getSkin(), "uiLabelStyle");
+       /*poppedLabel = new Label("Popped: 0", style);
         poppedLabel.setFontScale(2);
-        poppedLabel.setPosition(20, 440);
+        poppedLabel.setPosition(20, 440);*/
         uiStage.addActor(poppedLabel);
 
         escaped = 0;
-        escapedLabel = new Label("Escaped: 0", style);
+        escapedLabel = new Label("Escaped: --", style);
         escapedLabel.setFontScale(2);
         escapedLabel.setPosition(220, 440);
         uiStage.addActor(escapedLabel);
@@ -96,17 +95,17 @@ public class BalloonLevel extends BaseScreen {
         //Проверка времени для следующего респавна баллона
         if (spawnTimer > spawnInterval) {
             spawnTimer -= spawnInterval;
-            final BallonActor ballon;
+            final BalloonActor ballon;
             if (new Random().nextInt(11) < 8) {
-                ballon = new StandartBallon();
+                ballon = new StandartBalloon();
             } else {
-                ballon = new DangerBallon();
+                ballon = new DangerBalloon();
             }
             ballon.addListener(
                     new InputListener() {
                         public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                             popped++;
-                            if (ballon instanceof StandartBallon)
+                            if (ballon instanceof StandartBalloon)
                                 boom.play(1.0f);
                             else
                                 badBoom.play(1.0f);

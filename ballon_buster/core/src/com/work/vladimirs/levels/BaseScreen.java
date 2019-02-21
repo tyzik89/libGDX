@@ -1,25 +1,31 @@
-package com.work.vladimirs.screens;
+package com.work.vladimirs.levels;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.work.vladimirs.game.BaseGame;
 
 public abstract class BaseScreen implements Screen, InputProcessor{
-    protected Game game;
+    protected BaseGame baseGame;
 
     protected Stage mainStage;
     protected Stage uiStage;
+    protected Table uiTable;
 
     public final int viewWidth = 640;
     public final int viewHeight = 480;
 
     private boolean paused;
 
-    public BaseScreen(Game game) {
-        this.game = game;
+    public BaseScreen(BaseGame baseGame) {
+        this.baseGame = baseGame;
         mainStage = new Stage(new FitViewport(viewWidth, viewHeight));
         uiStage = new Stage(new FitViewport(viewWidth, viewHeight));
+        uiTable = new Table();
+        uiTable.setFillParent(true);
+        uiStage.addActor(uiTable);
         paused = false;
         InputMultiplexer inputMultiplexer = new InputMultiplexer(this, uiStage, mainStage);
         Gdx.input.setInputProcessor(inputMultiplexer);

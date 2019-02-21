@@ -1,13 +1,13 @@
 package com.work.vladimirs.entities;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.work.vladimirs.actors.BallonActor;
+import com.work.vladimirs.actors.BalloonActor;
 
 import java.util.Random;
 
-public class StandartBallon extends BallonActor {
+public class StandartBalloon extends BalloonActor {
 
-    public StandartBallon() {
+    public StandartBalloon() {
         setTexture(new Texture("balloon.png"));
         setColor(generateClorComponent(), generateClorComponent(), generateClorComponent(),1);
         setSize(76, 100);
