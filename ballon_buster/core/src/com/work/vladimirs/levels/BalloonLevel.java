@@ -7,8 +7,11 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.work.vladimirs.actors.BalloonActor;
 import com.work.vladimirs.actors.BaseActor;
@@ -18,7 +21,7 @@ import com.work.vladimirs.game.BaseGame;
 
 import java.util.Random;
 
-public class BalloonLevel extends BaseScreen {
+public class BalloonLevel extends BaseLevel {
     private BaseActor background;
 
     private float spawnTimer;
@@ -59,23 +62,15 @@ public class BalloonLevel extends BaseScreen {
         Label.LabelStyle style = new Label.LabelStyle(font, Color.NAVY);
 
         popped = 0;
-        poppedLabel = new Label("Popped: --", baseGame.getSkin(), "uiLabelStyle");
-       /*poppedLabel = new Label("Popped: 0", style);
-        poppedLabel.setFontScale(2);
-        poppedLabel.setPosition(20, 440);*/
-        uiStage.addActor(poppedLabel);
+        poppedLabel = new Label("Popped: 0", baseGame.getSkin(), "uiLabelStyle");
 
         escaped = 0;
-        escapedLabel = new Label("Escaped: --", style);
-        escapedLabel.setFontScale(2);
-        escapedLabel.setPosition(220, 440);
-        uiStage.addActor(escapedLabel);
+        escapedLabel = new Label("Escaped: 0", baseGame.getSkin(), "uiLabelStyle");
 
         clickCount = 0;
-        hitRatioLabel = new Label("Hit Ration: ---", style);
-        hitRatioLabel.setFontScale(2);
-        hitRatioLabel.setPosition(420, 440);
-        uiStage.addActor(hitRatioLabel);
+        hitRatioLabel = new Label("Hit Ration: ---", baseGame.getSkin(), "uiLabelStyle");
+
+
 
         //Инициализация музыки
         levelMusic = Gdx.audio.newMusic(new FileHandle("music/banjo_race.mp3"));
@@ -86,6 +81,32 @@ public class BalloonLevel extends BaseScreen {
         levelMusic.setVolume(0.1f);
         levelMusic.play();
 
+        //Пауза игры
+        Texture pauseTexture = new Texture(new FileHandle("buttons/pause.png"));
+        baseGame.getSkin().add("pauseImage", pauseTexture);
+        Button.ButtonStyle pauseStyle = new Button.ButtonStyle();
+        pauseStyle.up = baseGame.getSkin().getDrawable("pauseImage");
+        Button pauseButton = new Button(pauseStyle);
+        pauseButton.addListener(
+                new InputListener() {
+                    @Override
+                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                        BalloonLevel.super.togglePaused();
+                        return true;
+                    }
+                });
+
+
+        super.uiTable.pad(5);
+        super.uiTable.add(poppedLabel);
+        super.uiTable.add().expandX();
+        super.uiTable.add(escapedLabel);
+        super.uiTable.add().expandX();
+        super.uiTable.add(hitRatioLabel);
+        super.uiTable.add().expandX();
+        super.uiTable.row();
+        super.uiTable.add().colspan(5).expandY();
+        super.uiTable.add(pauseButton).colspan(5).bottom();
     }
 
     @Override
@@ -115,6 +136,14 @@ public class BalloonLevel extends BaseScreen {
                     }
             );
             mainStage.addActor(ballon);
+        }
+
+        //Удаление шара, который вышел за пределы экрана
+        for (Actor actor : mainStage.getActors()) {
+            if (actor.getX() > mapWidth || actor.getY() > mapHeight) {
+                escaped++;
+                actor.remove();
+            }
         }
 
         //Обновление пользовательского интерфейса
