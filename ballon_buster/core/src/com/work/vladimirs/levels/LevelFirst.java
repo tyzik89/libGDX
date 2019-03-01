@@ -7,7 +7,6 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -21,7 +20,7 @@ import com.work.vladimirs.game.BaseGame;
 
 import java.util.Random;
 
-public class BalloonLevel extends BaseLevel {
+public class LevelFirst extends BaseScreen {
     private BaseActor background;
 
     private float spawnTimer;
@@ -43,7 +42,7 @@ public class BalloonLevel extends BaseLevel {
     final int mapWidth = 640;
     final int mapHeight = 480;
 
-    public BalloonLevel(BaseGame baseGame) {
+    public LevelFirst(BaseGame baseGame) {
         super(baseGame);
     }
 
@@ -91,7 +90,7 @@ public class BalloonLevel extends BaseLevel {
                 new InputListener() {
                     @Override
                     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                        BalloonLevel.super.togglePaused();
+                        LevelFirst.super.togglePaused();
                         return true;
                     }
                 });

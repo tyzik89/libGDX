@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.work.vladimirs.game.BaseGame;
 
-public abstract class BaseLevel implements Screen, InputProcessor{
+public abstract class BaseScreen implements Screen, InputProcessor{
     protected BaseGame baseGame;
 
     protected Stage mainStage;
@@ -19,7 +19,7 @@ public abstract class BaseLevel implements Screen, InputProcessor{
 
     private boolean paused;
 
-    public BaseLevel(BaseGame baseGame) {
+    public BaseScreen(BaseGame baseGame) {
         this.baseGame = baseGame;
         mainStage = new Stage(new FitViewport(viewWidth, viewHeight));
         uiStage = new Stage(new FitViewport(viewWidth, viewHeight));
